@@ -124,8 +124,21 @@ export default function PublicProfile() {
             <a href={`mailto:${profileData.email}`} className="contact-badge"><Mail size={16} /> {profileData.email}</a>
           </div>
 
-          <button onClick={() => setIsModalOpen(true)} className="contact-btn pulse-border" style={{ backgroundColor: 'var(--profile-accent)', color: profileData.theme_config?.isLight ? '#fff' : '#000', boxShadow: `0 0 15px var(--profile-accent)` }}>
-            Solicitar Orçamento
+          <button 
+            onClick={() => setIsModalOpen(true)} 
+            className="contact-btn pulse-border" 
+            style={{ 
+              backgroundColor: '#25D366', 
+              color: '#fff', 
+              boxShadow: `0 0 15px rgba(37, 211, 102, 0.4)`,
+              border: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              margin: '0 auto'
+            }}
+          >
+            <Phone size={20} /> Entrar em Contato
           </button>
         </div>
 
@@ -155,35 +168,55 @@ export default function PublicProfile() {
         </footer>
       </div>
 
-      {/* Modal de Orçamento */}
+      {/* Modal de Contato Direto */}
       {isModalOpen && (
         <div className="contact-modal-overlay" onClick={() => setIsModalOpen(false)}>
-          <div className="contact-modal animate-fade-in" onClick={e => e.stopPropagation()}>
+          <div className="contact-modal animate-fade-in" onClick={e => e.stopPropagation()} style={{ textAlign: 'center', padding: '40px 20px' }}>
             <button className="close-modal-btn" onClick={() => setIsModalOpen(false)}><X size={24} /></button>
-            <h2>Solicitar Orçamento</h2>
-            <form onSubmit={handleContactSubmit}>
-              <input 
-                type="text" 
-                placeholder="Seu Nome" 
-                required 
-                value={contactForm.name}
-                onChange={e => setContactForm({...contactForm, name: e.target.value})}
-              />
-              <input 
-                type="text" 
-                placeholder="Seu WhatsApp" 
-                required 
-                value={contactForm.phone}
-                onChange={e => setContactForm({...contactForm, phone: e.target.value})}
-              />
-              <textarea 
-                placeholder="Como posso te ajudar?" 
-                required
-                value={contactForm.message}
-                onChange={e => setContactForm({...contactForm, message: e.target.value})}
-              ></textarea>
-              <button type="submit" className="cyan-btn" style={{ width: '100%', justifyContent: 'center' }}>Enviar Mensagem</button>
-            </form>
+            <h2 style={{ marginBottom: '10px' }}>Falar com {profileData.name.split(' ')[0]}</h2>
+            <p style={{ color: 'var(--profile-text-sec)', marginBottom: '30px' }}>Escolha como deseja entrar em contato agora:</p>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <a 
+                href={getWhatsappLink(profileData.phone)} 
+                target="_blank" 
+                rel="noreferrer" 
+                className="cyan-btn" 
+                style={{ 
+                  backgroundColor: '#25D366', 
+                  color: '#fff', 
+                  width: '100%', 
+                  justifyContent: 'center',
+                  fontSize: '1.1rem',
+                  padding: '15px'
+                }}
+              >
+                <Phone size={20} style={{ marginRight: '10px' }} /> Conversar no WhatsApp
+              </a>
+              
+              <a 
+                href={`tel:${profileData.phone.replace(/\D/g, '')}`} 
+                className="secondary-btn" 
+                style={{ 
+                  width: '100%', 
+                  justifyContent: 'center',
+                  fontSize: '1.1rem',
+                  padding: '15px',
+                  borderColor: 'var(--profile-accent)',
+                  color: 'var(--profile-accent)'
+                }}
+              >
+                <Phone size={20} style={{ marginRight: '10px' }} /> Ligar Agora
+              </a>
+
+              <a 
+                href={`mailto:${profileData.email}`} 
+                className="contact-badge" 
+                style={{ marginTop: '10px', textDecoration: 'none', color: 'var(--profile-text-sec)' }}
+              >
+                Ou enviar um e-mail para: {profileData.email}
+              </a>
+            </div>
           </div>
         </div>
       )}

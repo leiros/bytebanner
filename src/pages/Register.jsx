@@ -9,8 +9,7 @@ export default function Register() {
     fullName: '',
     email: '',
     password: '',
-    phone: '',
-    cpf: ''
+    phone: ''
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -52,8 +51,7 @@ export default function Register() {
           data: {
             name: formData.fullName,
             username: baseUsername,
-            phone: formData.phone,
-            cpf: formData.cpf
+            phone: formData.phone
           }
         }
       });
@@ -69,15 +67,6 @@ export default function Register() {
       setError(`Ocorreu um erro ao criar a conta. Tente novamente. Detalhes: ${err.message || err.error_description}`);
     }
     setLoading(false);
-  };
-
-  const formatCPF = (value) => {
-    return value
-      .replace(/\D/g, '')
-      .replace(/(\d{3})(\d)/, '$1.$2')
-      .replace(/(\d{3})(\d)/, '$1.$2')
-      .replace(/(\d{3})(\d{1,2})/, '$1-$2')
-      .replace(/(-\d{2})\d+?$/, '$1');
   };
 
   const formatPhone = (value) => {
@@ -147,35 +136,18 @@ export default function Register() {
             </div>
           </div>
 
-          <div className="form-row">
-            <div className="form-group">
-              <label>Telefone / WhatsApp</label>
-              <div className="input-wrapper">
-                <Phone size={18} className="input-icon" />
-                <input 
-                  type="text" 
-                  className="input-field with-icon" 
-                  placeholder="(11) 99999-9999"
-                  value={formData.phone}
-                  onChange={(e) => setFormData({...formData, phone: formatPhone(e.target.value)})}
-                  required
-                />
-              </div>
-            </div>
-
-            <div className="form-group">
-              <label>CPF</label>
-              <div className="input-wrapper">
-                <FileText size={18} className="input-icon" />
-                <input 
-                  type="text" 
-                  className="input-field with-icon" 
-                  placeholder="000.000.000-00"
-                  value={formData.cpf}
-                  onChange={(e) => setFormData({...formData, cpf: formatCPF(e.target.value)})}
-                  required
-                />
-              </div>
+          <div className="form-group">
+            <label>Telefone / WhatsApp</label>
+            <div className="input-wrapper">
+              <Phone size={18} className="input-icon" />
+              <input 
+                type="text" 
+                className="input-field with-icon" 
+                placeholder="(11) 99999-9999"
+                value={formData.phone}
+                onChange={(e) => setFormData({...formData, phone: formatPhone(e.target.value)})}
+                required
+              />
             </div>
           </div>
 

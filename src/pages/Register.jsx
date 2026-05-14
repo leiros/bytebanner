@@ -9,7 +9,8 @@ export default function Register() {
     fullName: '',
     email: '',
     password: '',
-    phone: ''
+    phone: '',
+    privacyAccept: false
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -19,6 +20,12 @@ export default function Register() {
     e.preventDefault();
     setError('');
     setLoading(true);
+
+    if (!formData.privacyAccept) {
+      setError('Você precisa aceitar os Termos e a Política de Privacidade para continuar.');
+      setLoading(false);
+      return;
+    }
 
     try {
       // 1. Criar username (slug da url) sem números
@@ -149,6 +156,20 @@ export default function Register() {
                 required
               />
             </div>
+          </div>
+
+          <div className="form-group" style={{ marginBottom: '16px' }}>
+            <label className="checkbox-wrapper" style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', fontWeight: 'normal', fontSize: '0.9rem' }}>
+              <input 
+                type="checkbox" 
+                checked={formData.privacyAccept}
+                onChange={(e) => setFormData({...formData, privacyAccept: e.target.checked})}
+                style={{ width: '18px', height: '18px', accentColor: 'var(--cyan-main)' }}
+              />
+              <span>
+                Li e concordo com os <a href="#" onClick={(e) => { e.preventDefault(); alert('POLÍTICA DE PRIVACIDADE:\n\n1. Coletamos seu nome e e-mail para autenticação.\n2. Seu telefone e serviços cadastrados serão exibidos publicamente em seu perfil.\n3. Não vendemos seus dados para terceiros.\n4. Você pode excluir sua conta a qualquer momento no painel.'); }} style={{ color: 'var(--cyan-main)', textDecoration: 'underline' }}>Termos e Política de Privacidade</a>.
+              </span>
+            </label>
           </div>
 
           <button type="submit" disabled={loading} className="cyan-btn submit-btn pulse-border mt-4">

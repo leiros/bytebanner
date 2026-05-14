@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ServiceCard from '../components/ServiceCard';
 import PremiumUpsellModal from '../components/PremiumUpsellModal';
-import { Plus, Palette, Image as ImageIcon, Eye, LogOut, Zap, User } from 'lucide-react';
+import { Plus, Palette, Image as ImageIcon, Eye, LogOut, Zap, User, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../supabase';
 import { useAuth } from '../contexts/AuthContext';
@@ -142,6 +142,25 @@ export default function Dashboard() {
     */
   };
 
+  const handleDeleteAccount = async () => {
+    const confirm = window.confirm("TEM CERTEZA? Isso apagará permanentemente seu perfil, seus serviços e seu acesso. Esta ação não pode ser desfeita.");
+    if (!confirm) return;
+
+    try {
+      setLoading(true);
+      const { error } = await supabase.rpc('delete_user_account');
+      if (error) throw error;
+      
+      await signOut();
+      navigate('/');
+      alert("Sua conta foi excluída com sucesso.");
+    } catch (err) {
+      console.error(err);
+      alert("Erro ao excluir conta. Tente novamente mais tarde.");
+      setLoading(false);
+    }
+  };
+
   if (loading) {
     return <div className="container dashboard-container"><p style={{textAlign:'center', marginTop:'100px'}}>Carregando seu painel...</p></div>;
   }
@@ -229,6 +248,18 @@ export default function Dashboard() {
             </button>
             <button className="secondary-btn" style={{ width: '100%', fontSize: '0.9rem' }} onClick={() => handleHighlight('services')}>
               Destacar Serviços - R$ 1,99 <small>/ 7 dias</small>
+            </button>
+          </div>
+
+          <div className="glass-panel sidebar-card" style={{ marginTop: '24px', borderColor: 'rgba(255, 71, 87, 0.3)' }}>
+            <h3 style={{ color: 'var(--error)' }}><Trash2 size={20} className="inline-icon"/> Zona de Perigo</h3>
+            <p className="sm-text" style={{ marginBottom: '16px' }}>Deseja encerrar suas atividades e apagar todos os seus dados?</p>
+            <button 
+              className="secondary-btn" 
+              style={{ width: '100%', fontSize: '0.9rem', color: 'var(--error)', borderColor: 'var(--error)' }} 
+              onClick={handleDeleteAccount}
+            >
+              Excluir Minha Conta Permanentemente
             </button>
           </div>
         </div>

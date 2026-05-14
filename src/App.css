@@ -1,0 +1,11 @@
+/* App.css limpo pois index.css tem o Design System */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+  padding-top: 80px; /* offset para a navbar fixa */
+}
